@@ -29,13 +29,6 @@ def get_next_channel_position(channel: discord.VoiceChannel):
     if (channel.category is not None and len(channel.category.channels) > 0):
         return channel.category.channels[len(channel.category.channels) - 1].position + 1
     return 0
-    # i = channel.position + 1
-    # for z in channel.guild.channels[channel.position + 1:]:
-    #     if (not isinstance(z, discord.VoiceChannel)):
-    #         break
-    #     else:
-    #         i = i + 1
-    # return i
 
 import typing
 type int_vector = typing.List[int]
@@ -52,7 +45,6 @@ def get_channel_for_event_tracking_per_guild(guild_id: int) -> int:
 
 @bot.event
 async def on_member_update(before: discord.Member, after):
-    print("Test")
     guild = before.guild
     tracked_roles_id = get_tracked_roles_per_guild(guild.id)
     print(tracked_roles_id)
@@ -91,7 +83,7 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
             print("Removing")
             created_channels.remove(before.channel.id)
             await before.channel.delete()
-    if (member.guild.id ==TEST_GUILD and after.channel is not None and after.channel.name.startswith(create_vc_prefix)):
+    if (after.channel is not None and after.channel.name.startswith(create_vc_prefix)):
         guild = member.guild
         position = get_next_channel_position(after.channel)
         category = after.channel.category
