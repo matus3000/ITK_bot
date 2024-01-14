@@ -69,9 +69,9 @@ async def on_member_update(before: discord.Member, after):
         return
     message = f'{before.display_name} '
     if (len(added_roles) > 0):
-        message += f'- has been given following roles {", ".join(list(map(lambda x: x.name, added_roles)))}'
+        message += f'- has been given following role(s) - {", ".join(list(map(lambda x: x.name, added_roles)))}'
     if (len(removed_roles) > 0):
-        message += f'- has been removed from following roles {", ".join(list(map(lambda x: x.name, removed_roles)))}'
+        message += f'- has been removed from following role(s) - {", ".join(list(map(lambda x: x.name, removed_roles)))}'
     channel = guild.get_channel(channel_id)
     await channel.send(message)
 
