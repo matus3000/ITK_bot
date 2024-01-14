@@ -99,7 +99,7 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
 @bot.event
 async def on_scheduled_event_user_add(event: discord.ScheduledEvent, user: discord.User):
     channel_id = get_channel_for_event_tracking_per_guild(event.guild.id)
-    msg = f"+ User '{user.display_name}' with discord name: '{user.name}' joined event '{event.name}'."
+    msg = f"+User '{user.display_name}' (with a discord name '{user.name}') joined event '{event.name}'."
     channel = event.guild.get_channel(channel_id)
     await channel.send(msg)
     return 0
@@ -107,7 +107,7 @@ async def on_scheduled_event_user_add(event: discord.ScheduledEvent, user: disco
 @bot.event
 async def on_scheduled_event_user_remove(event, user):
     channel_id = get_channel_for_event_tracking_per_guild(event.guild.id)
-    msg = f"- User '{user.display_name}' with discord name: '{user.name}' left event '{event.name}'."
+    msg = f"-User '{user.display_name}' (with a discord name '{user.name}') left event '{event.name}'."
     channel = event.guild.get_channel(channel_id)
     await channel.send(msg)
     return 0
