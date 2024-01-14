@@ -88,7 +88,7 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
         position = get_next_channel_position(after.channel)
         category = after.channel.category
         print(f"After channel position {after.channel.position}")
-        created_channel = await guild.create_voice_channel(name=f"{member.display_name}'s channel",
+        created_channel = await guild.create_voice_channel(name=f"#{member.display_name}'s channel",
                                                             bitrate=guild.bitrate_limit, 
                                                             position = position,
                                                             category = category)
