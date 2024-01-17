@@ -67,7 +67,7 @@ async def on_member_update(before: discord.Member, after):
             
     if (len(added_roles) == 0 and len(removed_roles) == 0):
         return
-    message = f'{before.display_name} '
+    message = f'{before.nick} (discord name {before.name}) '
     if (len(added_roles) > 0):
         message += f'- has been given following role(s) - {", ".join(list(map(lambda x: x.name, added_roles)))}'
     if (len(removed_roles) > 0):
@@ -99,7 +99,7 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
 @bot.event
 async def on_scheduled_event_user_add(event: discord.ScheduledEvent, user: discord.User):
     channel_id = get_channel_for_event_tracking_per_guild(event.guild.id)
-    msg = f"+User '{user.display_name}' (with a discord name '{user.name}') joined event '{event.name}'."
+    msg = f"+User '{user.nick}' (with a discord name '{user.name}') joined event '{event.name}' that starts at {event.start_time}."
     channel = event.guild.get_channel(channel_id)
     await channel.send(msg)
     return 0
@@ -107,7 +107,7 @@ async def on_scheduled_event_user_add(event: discord.ScheduledEvent, user: disco
 @bot.event
 async def on_scheduled_event_user_remove(event, user):
     channel_id = get_channel_for_event_tracking_per_guild(event.guild.id)
-    msg = f"-User '{user.display_name}' (with a discord name '{user.name}') left event '{event.name}'."
+    msg = f"-User '{user.nick}' (with a discord name '{user.name}') left event '{event.name}' that starts at {event.start_time}."
     channel = event.guild.get_channel(channel_id)
     await channel.send(msg)
     return 0
