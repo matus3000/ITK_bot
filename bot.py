@@ -67,7 +67,7 @@ async def on_member_update(before: discord.Member, after):
             
     if (len(added_roles) == 0 and len(removed_roles) == 0):
         return
-    message = f'{before.display_name} '
+    message = f'{before.nick} '
     if (len(added_roles) > 0):
         message += f'- has been given following role(s) - {", ".join(list(map(lambda x: x.name, added_roles)))}'
     if (len(removed_roles) > 0):
@@ -88,7 +88,7 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
         position = get_next_channel_position(after.channel)
         category = after.channel.category
         print(f"After channel position {after.channel.position}")
-        created_channel = await guild.create_voice_channel(name=f"#{member.display_name}'s channel",
+        created_channel = await guild.create_voice_channel(name=f"#{member.nick}'s channel",
                                                             bitrate=guild.bitrate_limit, 
                                                             position = position,
                                                             category = category)
@@ -96,18 +96,23 @@ async def on_voice_state_update(member: discord.Member, before: discord.VoiceSta
         await member.move_to(channel=created_channel)
         print(f"Created channel {created_channel.id}")
 
+def get_member(guild: discord.Guild, user: discord.User) -> discord.Member:
+    return guild.get_member(user.id)
+
 @bot.event
 async def on_scheduled_event_user_add(event: discord.ScheduledEvent, user: discord.User):
     channel_id = get_channel_for_event_tracking_per_guild(event.guild.id)
-    msg = f"+User '{user.display_name}' (with a discord name '{user.name}') joined event '{event.name}'."
+    member = event.guild.get_member(user.id)
+    msg = f"+Member '{member.nick}' (with a discord name '{user.name}') joined event '{event.name}' starting at {event.start_time}."
     channel = event.guild.get_channel(channel_id)
     await channel.send(msg)
     return 0
 
 @bot.event
-async def on_scheduled_event_user_remove(event, user):
+async def on_scheduled_event_user_remove(event: discord.ScheduledEvent, user: discord.User):
     channel_id = get_channel_for_event_tracking_per_guild(event.guild.id)
-    msg = f"-User '{user.display_name}' (with a discord name '{user.name}') left event '{event.name}'."
+    member = event.guild.get_member(user.id)
+    msg = f"-Member '{member.nick}' (with a discord name '{user.name}') left event '{event.name}' starting at {event.start_time}."
     channel = event.guild.get_channel(channel_id)
     await channel.send(msg)
     return 0
